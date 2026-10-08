@@ -1,2 +1,2 @@
-gcc -o mathing.exe main.c
+gcc -I./utilities ./utilities/printcmd.c main.c -o mathing.exe
 ./mathing.exe
