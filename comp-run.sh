@@ -1,2 +1,2 @@
-gcc -I./utilities ./utilities/printcmd.c main.c -o mathing.exe
+gcc ./utilities/strexten.c ./utilities/printcmd.c main.c -o mathing.exe
 ./mathing.exe

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+
 #include "utilities/printcmd.h"
 
 const char *QUIT_CMD = ":q";
@@ -15,20 +16,10 @@ void scanInt(char *ch);
 
 int main() {
     char *result = calloc(sizeof(char), 64);
-    //puts("Hello World!");
-    //printf("Enter \"%s\" to quit\n", QUIT_CMD);
-    //scanInt(result);
+    PrintFNL("Hello World!");
+    PrintFNL("Enter \"%s\" to quit", QUIT_CMD);
+    scanInt(result);
     free(result);
-
-    PrintFN("Hello World!\n");
-    PrintFN("%s\n", "yoyo");
-    PrintFN("%d is a %s number!\n", 1000, "BIG");
-    PrintFN("%i is a %c%c%c%c number!\n", 1000000000, 'H', 'U', 'G', 'E');
-    PrintFN("This is %%%d epic\n", 100);
-    PrintFNL("\"%s\" ok said", "Hey");
-    PrintFN("%c%c%c%c%c%c%c%c\n", 'H', 'U', 'G', 'E');
-    //printf("hello\nhello2hello3");
-    //printf("\b\b\b\b\r\r\r\r\b\b\b\b\b\b");
     return 0; 
 }
 
@@ -56,7 +47,7 @@ bool isString_Numeric(char *ch)
 // where the input is
 void scanInt(char *ch) 
 {
-    printf("Enter Number:\t");
+    PrintFN("Enter Number:\t");
     scanf("%s", ch);
     if (strcmp(ch, QUIT_CMD) == 0) 
     {
@@ -68,7 +59,7 @@ void scanInt(char *ch)
     bool isNum = isString_Numeric(ch);
     if (isNum == false) 
     { 
-        printf("%s is not a number!\n", ch);
+        PrintFNL("%s is not a number!", ch);
         scanInt(ch); 
     }
     return;
