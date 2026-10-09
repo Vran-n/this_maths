@@ -1,5 +1,13 @@
 #pragma once
 
-void PrintF(const char *format, ...);
+/*
+PrintFormatNewLine.
+SUPPORTS: %s, %c, %d, %i, %%.
+*/
+void PrintFNL(const char *restrict format, ...);
 
-char *str_sep_after(char *str, const char *separator);
+/*
+PrintFormatNew.
+SUPPORTS: %s, %c, %d, %i, %%.
+*/
+void PrintFN(const char *restrict format, ...);

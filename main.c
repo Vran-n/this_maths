@@ -20,10 +20,15 @@ int main() {
     //scanInt(result);
     free(result);
 
-    PrintF("%s\n", "yoyo");
-    PrintF("%d is a %s number!\n", 1000, "BIG");
-    PrintF("%i is a %c%c%c number!\n", 1000000, 'B', 'I', 'G');
-    PrintF("This is %%%d epic\n", 100);
+    PrintFN("Hello World!\n");
+    PrintFN("%s\n", "yoyo");
+    PrintFN("%d is a %s number!\n", 1000, "BIG");
+    PrintFN("%i is a %c%c%c%c number!\n", 1000000000, 'H', 'U', 'G', 'E');
+    PrintFN("This is %%%d epic\n", 100);
+    PrintFNL("\"%s\" ok said", "Hey");
+    PrintFN("%c%c%c%c%c%c%c%c\n", 'H', 'U', 'G', 'E');
+    //printf("hello\nhello2hello3");
+    //printf("\b\b\b\b\r\r\r\r\b\b\b\b\b\b");
     return 0; 
 }
 
