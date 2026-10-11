@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "utilities/printcmd.h"
+#include "utilities/strexten.h"
+#include "utilities/strstuff.h"
 
 const char *QUIT_CMD = ":q";
 
@@ -17,9 +19,18 @@ void scanInt(char *ch);
 int main() {
     char *result = calloc(sizeof(char), 64);
     PrintFNL("Hello World!");
-    PrintFNL("Enter \"%s\" to quit", QUIT_CMD);
+    PrintFNL("Enter \"%s\" on any field to quit", QUIT_CMD);
     scanInt(result);
     free(result);
+    
+    PrintFNL("Hello");
+    PrintFNL("This is a test on my printing method.");
+    PrintFNL("If this works as it should");
+    PrintFNL("There must be 4 strings stored in the list.");
+    PrintFNL("%s\n%c\n%%\n%i\n%d", "Hello", 'h', 4, 7);
+    //printf("\033[1A\r\033[2K");
+    //printf("\033[1A\r\033[2K");
+    //printf("\033[1A\r\033[2K");
     return 0; 
 }
 
@@ -31,7 +42,7 @@ bool isString_Numeric(char *ch)
 {
     bool isNumber = true;
     size_t len = strlen(ch);
-    if (len == 1 && ch[0] == 45) { return false; }
+    if (len == 1 && ch[0] == 45) return false;
     
     isNumber = isNumeric(ch[0]) || ch[0] == 45 ? true : false;
 
@@ -51,7 +62,7 @@ void scanInt(char *ch)
     scanf("%s", ch);
     if (strcmp(ch, QUIT_CMD) == 0) 
     {
-        puts("\nSUCCESSFULLY QUIT THE PROGRAM");
+        PrintFNL("\nSUCCESSFULLY QUIT THE PROGRAM");
         free(ch);
         exit(0);
     }

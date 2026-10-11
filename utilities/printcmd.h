@@ -2,12 +2,18 @@
 
 /*
 PrintFormatNewLine.
-SUPPORTS: %s, %c, %d, %i, %%.
+SUPPORTS: %s, %c, %d, %i
 */
-void PrintFNL(const char *restrict format, ...);
+void PrintFNL(
+    const char *restrict    __format, 
+    ...
+);
 
 /*
 PrintFormatNew.
-SUPPORTS: %s, %c, %d, %i, %%.
+SUPPORTS: %s, %c, %d, %i
 */
-void PrintFN(const char *restrict format, ...);
+void PrintFN(
+    const char *restrict     __format, 
+    ...
+);
