@@ -218,7 +218,7 @@ char **str_multi_split(
     str_list[0] = src_cpy;
     
     int i = 0;
-    char ***list_of_list = calloc(sizeof(char *), SIZE);
+    char **list_of_list[SIZE];
     list_of_list[i] = multi_str_split(str_list, __separators[0]);
     free(str_list);
 
@@ -229,7 +229,5 @@ char **str_multi_split(
     }
 
     for (int j = 0; j < i; j++) { free(list_of_list[j]); }
-    free(list_of_list);
-    
     return list_of_list[i];
 }

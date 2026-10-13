@@ -4,8 +4,17 @@
 PrintFormatNewLine.
 SUPPORTS: %s, %c, %d, %i
 */
-void PrintFNL(
-    const char *restrict    __format, 
+//void PrintFNL(
+//    const char *restrict    __format, 
+//    ...
+//);
+
+/*
+PrintFormat.
+SUPPORTS: %s, %c, %d, %i
+*/
+void RPrintF(
+    const char *restrict    __format,
     ...
 );
 
@@ -14,6 +23,8 @@ PrintFormatNew.
 SUPPORTS: %s, %c, %d, %i
 */
 void PrintFN(
-    const char *restrict     __format, 
+    const char *restrict    __format, 
     ...
 );
+
+void PrintCArr(char **array, const int __size);
