@@ -68,7 +68,7 @@ void __user_ask_pick_arithmetic()
 {
     char *result = malloc(sizeof(char) * 64);
 
-    PrintFN("Choose which arithmetic equation you'd want to solve:\n");
+    PrintFN("Choose which arithmetic equation you'd want to solve.\n");
     PrintFN("1.) Addition\n");
     PrintFN("2.) Subtraction\n");
     PrintFN("3.) Multiplication\n");
@@ -104,7 +104,7 @@ void user_ask_pick_arithmetic()
 {
     char *result = malloc(sizeof(char) * 64);
 
-    PrintFN("Choose which arithmetic equation you'd want to solve:\n");
+    PrintFN("Choose which arithmetic equation you'd want to solve.\n");
     PrintFN("1.) Addition\n");
     PrintFN("2.) Subtraction\n");
     PrintFN("3.) Multiplication\n");

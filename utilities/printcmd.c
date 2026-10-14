@@ -33,6 +33,7 @@ int BlockAdd(Block *block, char **string_list);
 int BlockRemove(Block *block);
 int BlockReplace(Block *block, char **string_list);
 
+// spent a good chunk of time doing this shit
 
 
 // delete print

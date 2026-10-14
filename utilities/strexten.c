@@ -5,7 +5,7 @@
 
 #include "strstuff.h"
 
-
+// im addicted to reinventing the wheel (too lazy to search (please fucking help me))
 
 char *strchar(
     const char *    __haystack, 

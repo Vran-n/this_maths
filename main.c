@@ -23,12 +23,9 @@ void scanInt(char *ch, bool first);
 
 int main() {
     srand(time(NULL));
-    //char *result = calloc(sizeof(char), 64);
-    //PrintFN("Hello World!\n");
-    PrintFN("Enter \"%s\" on any field to quit\n", QUIT_COMMAND);
-    //scanInt(result, true);
-    //free(result);
-    //PrintFN("1).\t3 x 4 = ?\n");
+    PrintFN("|---------- ThisMaths v1 ----------|\n");
+    PrintFN("A simple arithmetic equation generator.\n");
+    PrintFN("You may enter \"%s\" on any field to quit\n\n", QUIT_COMMAND);
 
     user_ask_pick_arithmetic();
     user_ask_pick_digits();
@@ -37,6 +34,7 @@ int main() {
     return 0; 
 }
 
+// this is kind of a mess because it was supposed to be in another file but i put it here anyway
 
 // do tail call optimazation for this bruv
 void ask_user_new_set_questions(uintmax_t question_amount)
@@ -77,7 +75,7 @@ void ask_user_new_set_questions(uintmax_t question_amount)
     {   
         clear_questionaire(question_amount);
         DPrint();
-        
+
         user_ask_pick_arithmetic();
         user_ask_pick_digits();
         uintmax_t i = ask_user_multiple_equations();
