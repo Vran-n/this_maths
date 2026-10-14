@@ -15,19 +15,26 @@
 const unsigned MAX_DIGIT = 4;
 unsigned Questions = 0;
 unsigned Digits = 1;
-Arithmetic A_Type = 0;
+Arithmetic A_Type = 2;
 int32_t current_x = 0; int32_t current_y = 0;
 
 
 Arithmetic symbol_to_enum(char symbol);
 
+void user_ask_pick_arithmetic();
 void user_ask_pick_digits();
-ans_user new_equation(char arthmetic);
+
+ans_user new_equation(void);
+ans_user pick_equation(char arthmetic);
 ans_user redo_equation(void);
 
 ans_char ask(unsigned digits);
 ans_equation arith_ans(Arithmetic answer);
+
 ans_user ask_addition(int32_t x, int32_t y);
+ans_user ask_subtraction(int32_t x, int32_t y);
+ans_user ask_multiplication(int32_t x, int32_t y);
+
 int8_t answer(char *number);
 
 
@@ -52,11 +59,120 @@ Arithmetic symbol_to_enum(char symbol)
     }
 }
 
+// [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+// twin methods because they are recursive + this is the neatiest(?) 
+// solution i can think of
+// (all of this just to delete the previous printed shit)
 
+void __user_ask_pick_arithmetic()
+{
+    char *result = malloc(sizeof(char) * 64);
+
+    PrintFN("Choose which arithmetic equation you'd want to solve:\n");
+    PrintFN("1.) Addition\n");
+    PrintFN("2.) Subtraction\n");
+    PrintFN("3.) Multiplication\n");
+    PrintFN("OPTION:\t");
+    scanf("%s", result);
+    scanQuitCommand(result);
+
+    bool isNum = isString_Numeric(result);
+    if (isNum == false) 
+    {   
+        DPrint(); DPrint(); DPrint(); DPrint(); DPrint();
+        RPrintF("%s is not a number!\n", result);
+        __user_ask_pick_arithmetic();
+        return;
+    }
+
+    const uintmax_t i = strtoumax(result, NULL, 10);
+    free(result);
+
+    if ((i >= 1 && i <= 3) == false)
+    {   
+        DPrint(); DPrint(); DPrint(); DPrint(); DPrint();
+        RPrintF("%d is not an option!\n", i);
+        __user_ask_pick_arithmetic();
+        return;
+    }
+
+    DPrint(); DPrint(); DPrint(); DPrint(); DPrint(); DPrint();
+    A_Type = i-1;
+}
+
+void user_ask_pick_arithmetic()
+{
+    char *result = malloc(sizeof(char) * 64);
+
+    PrintFN("Choose which arithmetic equation you'd want to solve:\n");
+    PrintFN("1.) Addition\n");
+    PrintFN("2.) Subtraction\n");
+    PrintFN("3.) Multiplication\n");
+    PrintFN("OPTION:\t");
+    scanf("%s", result);
+    scanQuitCommand(result);
+
+    bool isNum = isString_Numeric(result);
+    if (isNum == false) 
+    {   
+        DPrint(); DPrint(); DPrint(); DPrint();
+        RPrintF("%s is not a number!\n", result);
+        __user_ask_pick_arithmetic();
+        return;
+    }
+
+    const uintmax_t i = strtoumax(result, NULL, 10);
+    free(result);
+
+    if ((i >= 1 && i <= 3) == false)
+    {   
+        DPrint(); DPrint(); DPrint(); DPrint();
+        RPrintF("%d is not an option!\n", i);
+        __user_ask_pick_arithmetic();
+        return;
+    }
+
+    DPrint(); DPrint(); DPrint(); DPrint(); DPrint();
+    A_Type = i-1;
+}
+// =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+ //
+void __user_ask_pick_digits()
+{   
+    char *result = malloc(sizeof(char) * 64);
+    unsigned digits = 1;
+
+    PrintFN("Enter the number of digits:\t");
+    scanf("%s", result);
+    scanQuitCommand(result);
+
+    bool isNum = isString_Numeric(result);
+    if (isNum == false) 
+    {   
+        DPrint();
+        RPrintF("%s is not a number!\n", result);
+        __user_ask_pick_digits();
+        return;
+    }
+
+    const uintmax_t i = strtoumax(result, NULL, 10);
+    free(result);
+    digits = i;
+
+    if (digits > MAX_DIGIT)
+    {
+        Digits = MAX_DIGIT;
+        RPrintF("Entered:\t%d\n", digits);
+        PrintFN("Set to:\t\t%d (Capped at %d digits)\n", MAX_DIGIT, MAX_DIGIT);
+        return;
+    }
+
+    DPrint(); DPrint();
+    Digits = digits;
+}
 
 void user_ask_pick_digits()
 {   
-    char *result = calloc(sizeof(char), 64);
+    char *result = malloc(sizeof(char) * 64);
     unsigned digits = 1;
 
     PrintFN("Enter the number of digits:\t");
@@ -67,11 +183,12 @@ void user_ask_pick_digits()
     if (isNum == false) 
     {   
         RPrintF("%s is not a number!\n", result);
-        user_ask_pick_digits();
+        __user_ask_pick_digits();
         return;
     }
 
     const uintmax_t i = strtoumax(result, NULL, 10);
+    free(result);
     digits = i;
 
     if (digits > MAX_DIGIT)
@@ -79,15 +196,29 @@ void user_ask_pick_digits()
         Digits = MAX_DIGIT;
         RPrintF("Entered:\t%d\n", digits);
         PrintFN("Set to:\t\t%d (Capped at %d digits)\n", MAX_DIGIT, MAX_DIGIT);
-        free(result);
         return;
     }
 
+    DPrint();
     Digits = digits;
-    free(result);
 }
 
-ans_user new_equation(char arthmetic)
+
+
+ans_user new_equation(void)
+{   
+    ans_equation create_equation = ask(Digits)(A_Type);
+    if (create_equation == NULL) { return NULL; }
+
+    // bad practice but whatever
+    int a = pow(10, Digits);
+
+    int x = rand() % a;
+    int y = rand() % a;
+    return create_equation(x, y);
+}
+
+ans_user pick_equation(char arthmetic)
 {   
     Arithmetic a_enum = symbol_to_enum(arthmetic);
     ans_equation create_equation = ask(Digits)(a_enum);
@@ -103,7 +234,7 @@ ans_user new_equation(char arthmetic)
 
 ans_user redo_equation(void)
 {   
-return ask(Digits)(A_Type)(current_x, current_y);
+    return ask(Digits)(A_Type)(current_x, current_y);
 }
 
 
@@ -129,12 +260,12 @@ ans_equation arith_ans(Arithmetic answer)
         case 1: 
         {
             A_Type = 1;
-            return NULL;
+            return &ask_subtraction;
         }
         case 2:
         {
             A_Type = 2;
-            return NULL;
+            return &ask_multiplication;
         }
         default:
         {
@@ -147,8 +278,24 @@ ans_equation arith_ans(Arithmetic answer)
 ans_user ask_addition(int32_t x, int32_t y)
 {   
     current_x = x; current_y = y;
-    PrintFN("%d).\t%d + %d = ?\n", Questions + 1, x, y);
     Questions++;
+    PrintFN("%u).\t%d + %d = ?\n", Questions, x, y);
+    return &answer;
+}
+
+ans_user ask_subtraction(int32_t x, int32_t y)
+{   
+    current_x = x; current_y = y;
+    Questions++;
+    PrintFN("%u).\t%d - %d = ?\n", Questions, x, y);
+    return &answer;
+}
+
+ans_user ask_multiplication(int32_t x, int32_t y)
+{   
+    current_x = x; current_y = y;
+    Questions++;
+    PrintFN("%u).\t%d x %d = ?\n", Questions, x, y);
     return &answer;
 }
 
@@ -160,7 +307,7 @@ int8_t answer(char *number)
     if (isNum == false) 
     {   
         Questions--;
-        RPrintF("");
+        RPrintF("");    // remove the previous equation?? i forgot
         RPrintF("%s is not a number!\n", number);
         return -1;
     }
@@ -171,17 +318,29 @@ int8_t answer(char *number)
         case 0:
         {   
             int8_t result = current_x + current_y == user_answer ? 1 : 0;
+
+            // remove the previous equation
+            //RPrintF("");
+            //RPrintF("");
             if (result == true){ PrintFN("Correct!\n"); }
             else { PrintFN("Wrong!\n"); }
             return result;
         }
         case 1:
         {
-            return -1;
+            int8_t result = current_x - current_y == user_answer ? 1 : 0;
+
+            if (result == true){ PrintFN("Correct!\n"); }
+            else { PrintFN("Wrong!\n"); }
+            return result;
         }
         case 2:
         {
-            return -1;
+            int8_t result = current_x * current_y == user_answer ? 1 : 0;
+
+            if (result == true){ PrintFN("Correct!\n"); }
+            else { PrintFN("Wrong!\n"); }
+            return result;
         }
         default:
         {

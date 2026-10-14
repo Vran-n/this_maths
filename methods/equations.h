@@ -13,8 +13,11 @@ typedef ans_user(* ans_equation)(int32_t, int32_t);
 typedef ans_equation(* ans_char)(Arithmetic);
 
 
+void user_ask_pick_arithmetic();
 void user_ask_pick_digits();
-ans_user new_equation(char arthmetic);
+
+ans_user new_equation(void);
+ans_user pick_equation(char arthmetic);
 ans_user redo_equation(void);
 
 ans_char ask(unsigned digits);

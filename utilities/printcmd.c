@@ -23,12 +23,31 @@ Block printed = {
 };
 
 
+void DPrint(void);
 void RPrintF(const char *restrict __format,...);
 void PrintFNL(const char *restrict __format, ...);
 void PrintFN(const char *restrict __format, ...);
 void PrintCArr(char **array, const int __size);
+
 int BlockAdd(Block *block, char **string_list);
+int BlockRemove(Block *block);
 int BlockReplace(Block *block, char **string_list);
+
+
+
+// delete print
+void DPrint(void) 
+{
+    int oldstr_list_len = BlockRemove(&printed);
+
+    ///////// DELETE PREVIOUS PRINTED TEXT
+    for (int i = 0; i < oldstr_list_len; i++) 
+    {
+        printf("\033[1A\r\033[2K");
+    }
+}
+
+
 
 
 
@@ -87,8 +106,16 @@ void RPrintF(
         /////   INT
         if (strcmp(format, "%i") == 0) 
         {
-            int d = va_arg(args, int);
-            sprintf(temp, "%s%s%s%d", curr_str, "\b \b", "\b \b", d);
+            int i = va_arg(args, int);
+            sprintf(temp, "%s%s%s%i", curr_str, "\b \b", "\b \b", i);
+            goto FOUND;
+        }
+
+        /////   UNSIGNED INT
+        if (strcmp(format, "%u") == 0) 
+        {
+            unsigned u = va_arg(args, unsigned);
+            sprintf(temp, "%s%s%s%u", curr_str, "\b \b", "\b \b", u);
             goto FOUND;
         }
 
@@ -211,8 +238,16 @@ void PrintFN(
         /////   INT
         if (strcmp(format, "%i") == 0) 
         {
-            int d = va_arg(args, int);
-            sprintf(temp, "%s%s%s%d", curr_str, "\b \b", "\b \b", d);
+            int i = va_arg(args, int);
+            sprintf(temp, "%s%s%s%i", curr_str, "\b \b", "\b \b", i);
+            goto FOUND;
+        }
+
+        /////   UNSIGNED INT
+        if (strcmp(format, "%u") == 0) 
+        {
+            unsigned u = va_arg(args, unsigned);
+            sprintf(temp, "%s%s%s%u", curr_str, "\b \b", "\b \b", u);
             goto FOUND;
         }
 
@@ -255,7 +290,7 @@ int BlockAdd(Block *block, char **string_list)
 {   
     if (block->Length >= 100) { puts("BLOCK OVERFLOW!"); exit(1); }
     int len = 0;
-    while (len <= SIZE && string_list[len] != NULL) 
+    while (len < SIZE && string_list[len] != NULL) 
     {   
         List *l = &block->Lists[block->Length];
         l->Strings[len] = string_list[len]; 
@@ -270,6 +305,25 @@ int BlockAdd(Block *block, char **string_list)
     return len;
 }
 
+int BlockRemove(Block *block) 
+{
+    if (block->Length == 0) { return 0; }
+    int latest_list = block->Length - 1;
+    int old_list_len = block->Lists[latest_list].Length;
+    int len = 0;
+
+    while (len < SIZE) 
+    {   
+        List *l = &block->Lists[latest_list];
+        free(l->Strings[len]);
+        len++;
+    }
+    
+    //*(block->Lists + block->Length) = (List){};
+    block->Length--;
+    return old_list_len;
+}
+
 int BlockReplace(Block *block, char **string_list) 
 {   
     if (block->Length == 0) { BlockAdd(block, string_list); return 0; }
@@ -277,7 +331,7 @@ int BlockReplace(Block *block, char **string_list)
     int old_list_len = block->Lists[latest_list].Length;
     int len = 0;
 
-    while (len <= SIZE && string_list[len] != NULL) 
+    while (len < SIZE && string_list[len] != NULL) 
     {   
         List *l = &block->Lists[latest_list];
         free(l->Strings[len]);

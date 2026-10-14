@@ -10,7 +10,12 @@ SUPPORTS: %s, %c, %d, %i
 //);
 
 /*
-PrintFormat.
+DeletePrint.
+*/
+void DPrint(void);
+
+/*
+RePrintFormat.
 SUPPORTS: %s, %c, %d, %i
 */
 void RPrintF(
